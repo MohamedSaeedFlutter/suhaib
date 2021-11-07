@@ -41,6 +41,20 @@ class _HomeAppState extends State<HomeApp> {
         title:Text(AuthApi.get(context).currentIndex == 0 ?"قائمتى"
            :AuthApi.get(context).currentIndex == 1 ?"القائمة الرئيسية":
         AuthApi.get(context).appBarTxt??""),
+        leading: AuthApi.get(context).currentIndex > 1?
+        InkWell( onTap: () => Navigator.pop(context),
+            child: Icon(Icons.arrow_back_ios)):null,
+        actions: AuthApi.get(context).currentIndex == 3 ?[
+          InkWell( onTap: () {
+          AuthApi.get(context).setCurrentIndex(4);
+        },
+          child: Row(children: [
+            Icon(Icons.add_circle_outline,size: 32,),
+            SizedBox(width: 3,),
+            Text("أضف",style: TextStyle(fontSize: 18),),
+            SizedBox(width: 12,),
+          ],),
+        ),]:null,
       ),
       body: Center(
         child: _widgetOptions.elementAt(

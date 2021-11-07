@@ -126,6 +126,11 @@ int currentIndex = 0 ;
     currentIndex = index;
     emit(SetCurrentIndexState());
   }
+  File fileOutput;
+  setFileOutput ({File file}){
+    fileOutput = file;
+    emit(SetFileOutputState());
+  }
 
   String appBarTxt ;
   setAppBarTxt ({String txt}){

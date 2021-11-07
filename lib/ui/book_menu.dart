@@ -36,8 +36,6 @@ class _BookMenuState extends State<BookMenu> {
             AuthApi.get(context).setCurrentIndex(4);
 
             },
-          // Navigator.push(context, MaterialPageRoute(
-          //   builder: (context) => UploadFile(category: widget.appBarTxt??"",),)),
             child: Row(children: [
               Icon(Icons.add_circle_outline,size: 32,),
               SizedBox(width: 3,),

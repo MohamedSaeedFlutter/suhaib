@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:suhaib/Apis/upload_file_logic.dart';
+import 'package:suhaib/Auth/auth_logic/auth_api_REMOTE_1630.dart';
 import 'package:suhaib/Auth/widgets/custum_txt_field.dart';
 
 class UploadFile extends StatefulWidget {
@@ -15,23 +16,28 @@ final String category;
 }
 
 class _UploadFileState extends State<UploadFile> {
-
+  var auth = FirebaseAuth.instance.currentUser;
   File fileOutput;
   TextEditingController pdfController ;
-
+_sendFile(){
+  UploadFileLogic.get(context).sendFile(
+      amId: auth.uid, localFile: AuthApi.get(context).fileOutput,
+      cat: widget.category , sub: pdfController.text
+  ).then((value) => Fluttertoast.showToast(
+      msg: "The File uploaded successfully !"));
+}
   _pickFile() async {
     FilePickerResult result = await FilePicker.platform.pickFiles();
     if (result != null) {
-     setState(() {
-       fileOutput = File(result.files.single.path);
-     });
+       AuthApi.get(context).setFileOutput(
+         file: File(result.files.single.path)
+       );
     } else {
-        print("File picker is cancelled");    }
+        print("File picker is cancelled");}
   }
 
   @override
   Widget build(BuildContext context) {
-    var auth = FirebaseAuth.instance.currentUser;
     pdfController =
     TextEditingController(text:
     fileOutput?.path?.split('/')?.last.toString()??"");
@@ -63,21 +69,15 @@ print("1////${fileOutput?.path?.split('/')?.last.toString()??""}");
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.95,
             child: ElevatedButton(
+              onPressed: _sendFile ,
               style: ElevatedButton.styleFrom(
                 primary: Color.fromRGBO(155, 156, 184 , 1),
-                onPrimary: Colors.white,
+                // onPrimary: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0),
                 ),
               ),
-              onPressed: () {
-                UploadFileLogic.get(context).sendFile(
-                  amId: auth.uid, localFile: fileOutput ,
-                    cat: widget.category , sub: pdfController.text
-                ).then((value) => Fluttertoast.showToast(
-                    msg: "The File uploaded successfully !"));
-              }
-              , child: Text("اضافة",style:
+              child: Text("اضافة",style:
             TextStyle(fontSize: 18,
                 fontWeight: FontWeight.w400,
                 color: Colors.white),),
