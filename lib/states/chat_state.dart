@@ -4,6 +4,8 @@ class InitialChatState extends ChangeChatState {}
 
 class SearchScreenChatState extends ChangeChatState {}
 
+class AppBarTextState extends ChangeChatState {}
+
 class SetCurrentIndexState extends ChangeChatState {}
 
 class StreamListState extends ChangeChatState {}

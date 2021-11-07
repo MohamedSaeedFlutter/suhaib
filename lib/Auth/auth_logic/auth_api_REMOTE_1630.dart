@@ -121,12 +121,31 @@ AuthMode authMode ;
     authMode = AuthMode.SignUp;
     emit(ToSignUpState());
   }
-
 int currentIndex = 0 ;
   setCurrentIndex (int index){
     currentIndex = index;
     emit(SetCurrentIndexState());
   }
+
+  String appBarTxt ;
+  setAppBarTxt ({String txt}){
+    appBarTxt = txt;
+    emit(AppBarTextState());
+  }
+// appBarText({String x}){
+//   String  appBarTxt = "";
+//   switch(currentIndex) {
+//       case 0: {appBarTxt = "قائمتى";}
+//       break;
+//       case 1: {appBarTxt = "القائمة الرئيسية";}
+//       break;
+//       case 4: {appBarTxt = "اضافة";}
+//       break;
+//       default: {appBarTxt = x;}
+//       break;
+//     }
+//     return appBarTxt;
+//   }
 
   Future <User> initializeCurrentUser() async {
    try{currentUser = await FirebaseAuth.instance.currentUser;}
@@ -162,6 +181,9 @@ int currentIndex = 0 ;
     );
     launch(emailLaunchUri.toString());
   }
+
+
+
 
 
 

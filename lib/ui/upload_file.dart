@@ -3,37 +3,41 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:suhaib/Apis/upload_file_logic.dart';
 import 'package:suhaib/Auth/widgets/custum_txt_field.dart';
-import 'package:suhaib/home_chat/home_chat_logic/upload_file_logic.dart';
 
 class UploadFile extends StatefulWidget {
-  const UploadFile({Key key}) : super(key: key);
-
+  const UploadFile({Key key, this.category}) : super(key: key);
+final String category;
   @override
   _UploadFileState createState() => _UploadFileState();
 }
 
 class _UploadFileState extends State<UploadFile> {
 
-  File file;
+  File fileOutput;
   TextEditingController pdfController ;
 
-  Future<File> _pickFile() async {
+  _pickFile() async {
     FilePickerResult result = await FilePicker.platform.pickFiles();
     if (result != null) {
-       file = File(result.files.single.path);
+     setState(() {
+       fileOutput = File(result.files.single.path);
+     });
     } else {
         print("File picker is cancelled");    }
-    return file;
   }
 
   @override
   Widget build(BuildContext context) {
     var auth = FirebaseAuth.instance.currentUser;
     pdfController =
-    TextEditingController(text: file?.path.toString());
-
-    return Scaffold(body: Center(child:
+    TextEditingController(text:
+    fileOutput?.path?.split('/')?.last.toString()??"");
+print("1////${fileOutput?.path?.split('/')?.last.toString()??""}");
+    return Scaffold(
+      body: Center(child:
     Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -49,7 +53,7 @@ class _UploadFileState extends State<UploadFile> {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.95,
             child: CustumTextField(nameController: pdfController,
-              obscureTxt: true,txtType: TextInputType.text,
+              obscureTxt: false,txtType: TextInputType.text,
               hintTxt: "العنوان" ,vald: "برجاء ادخال عنوان",
             ),
           ),
@@ -68,9 +72,10 @@ class _UploadFileState extends State<UploadFile> {
               ),
               onPressed: () {
                 UploadFileLogic.get(context).sendFile(
-                  localFile: file,
-                    amId: auth.uid
-                );
+                  amId: auth.uid, localFile: fileOutput ,
+                    cat: widget.category , sub: pdfController.text
+                ).then((value) => Fluttertoast.showToast(
+                    msg: "The File uploaded successfully !"));
               }
               , child: Text("اضافة",style:
             TextStyle(fontSize: 18,

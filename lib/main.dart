@@ -2,13 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:suhaib/home_chat/home_chat_logic/home_chat_api.dart';
 import 'package:suhaib/states/chat_state.dart';
 import 'package:suhaib/ui/bottom_n_b.dart';
 
+import 'Apis/upload_file_logic.dart';
 import 'Auth/auth_logic/auth_api_REMOTE_1630.dart';
 import 'Auth/auth_ui/login.dart';
-import 'home_chat/home_chat_logic/upload_file_logic.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,9 +16,6 @@ Future<void> main() async {
       providers: [
         BlocProvider<AuthApi>(
           create: (BuildContext context) => AuthApi(),
-        ),
-        BlocProvider<DataApi>(
-          create: (BuildContext context) => DataApi(),
         ),
         BlocProvider<UploadFileLogic>(
           create: (BuildContext context) => UploadFileLogic(),
@@ -55,6 +51,7 @@ class _MyAppState extends State<MyApp> {
             return MediaQuery(
                 data: const MediaQueryData(),
                 child: MaterialApp(
+                  debugShowCheckedModeBanner: false,
                   initialRoute: '/',
                   title: 'Friends',
                   theme: ThemeData(

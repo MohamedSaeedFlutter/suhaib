@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suhaib/models/files_model.dart';
+import 'package:suhaib/models/person_model.dart';
 import 'package:suhaib/states/chat_state.dart';
 import 'package:uuid/uuid.dart';
 import 'package:path/path.dart' as path;
@@ -15,7 +16,7 @@ class UploadFileLogic extends Cubit<ChangeChatState>  {
 
 
   Future<void> sendFile(
-      {File localFile, String amId,}) async {
+      {File localFile, String amId,String cat, String sub}) async {
     if (localFile != null) {
       print("uploading image");
       var fileExtension = path.extension(localFile.path);
@@ -23,7 +24,7 @@ class UploadFileLogic extends Cubit<ChangeChatState>  {
       var uuid = const Uuid().v4();
       final Reference firebaseStorageRef = FirebaseStorage.instance
           .ref()
-          .child('sahib/data/${amId}/');
+          .child('sahib/data/${amId}$uuid/');
       await firebaseStorageRef.putFile(localFile)
           .catchError((onError) {
         print(onError);
@@ -32,8 +33,10 @@ class UploadFileLogic extends Cubit<ChangeChatState>  {
       String url = await firebaseStorageRef.getDownloadURL();
       print("download url: $url");
       Files file = Files(
+          subject: sub,
           fileUrl:  url,
           userId: amId,
+          category: cat,
           id: "$amId$uuid$url",
           date: DateTime.now().toIso8601String().substring(0,19));
       send(files:  file);
@@ -42,15 +45,40 @@ class UploadFileLogic extends Cubit<ChangeChatState>  {
     }
   }
 
-  Future<void> send({Files files}) async {
+  Future<void> send({Files files }) async {
     await FirebaseFirestore.instance
-    .collection("persons").doc(files.id)
+    .collection("persons").doc(files.userId)
         .collection('files')
         .add(files.toMap())
         .then((value) {})
         .catchError((error) {});
     emit(SendMessageChatState());
   }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>>getFiles(
+      {String uid})  {
+    var res;
+    try{   res =
+        FirebaseFirestore.instance.collection('persons').doc(uid)
+            .collection("files")
+            .snapshots();}
+    catch (e){print("Error Files $e");}
+    return  res;
+  }
+
+  Future<Person> getPerson({String uid}) async {
+    var res =
+    await FirebaseFirestore.instance.collection('persons').doc(uid).get();
+    print("ccccccccc");
+    print(res.data());
+    var person = Person.fromJSON(res.data());
+    print('ppppppp');
+    print(person.id);
+    return person;
+  }
+
+
+
 
 }
 

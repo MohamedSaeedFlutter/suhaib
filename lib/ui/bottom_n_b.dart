@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:suhaib/Auth/auth_logic/auth_api_REMOTE_1630.dart';
+import 'package:suhaib/ui/all_data.dart';
 import 'package:suhaib/ui/home_menu.dart';
 import 'package:suhaib/ui/sec_main_screen.dart';
+import 'package:suhaib/ui/upload_file.dart';
 
-import 'book_menu.dart';
 
 class HomeApp extends StatefulWidget {
-  const HomeApp({Key key}) : super(key: key);
+  const HomeApp({Key key, this.appBarTxt}) : super(key: key);
+  final String appBarTxt;
   @override
   State<HomeApp> createState() => _HomeAppState();
 }
 
 class _HomeAppState extends State<HomeApp> {
 
+
   int selectedIndex = 0;
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
+  static  List<Widget> _widgetOptions = <Widget>[
+    UploadFile(),
     HomeMenu(),
     SecMainScreen(),
-    BookMenu(),
+    AllData(),
+    UploadFile()
   ];
 
   void _onItemTapped(int index) {
@@ -37,7 +38,9 @@ class _HomeAppState extends State<HomeApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BottomNavigationBar Sample'),
+        title:Text(AuthApi.get(context).currentIndex == 0 ?"قائمتى"
+           :AuthApi.get(context).currentIndex == 1 ?"القائمة الرئيسية":
+        AuthApi.get(context).appBarTxt??""),
       ),
       body: Center(
         child: _widgetOptions.elementAt(

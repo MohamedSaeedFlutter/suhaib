@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:suhaib/Auth/auth_logic/auth_api_REMOTE_1630.dart';
 
-import 'book_menu.dart';
-import 'bottom_n_b.dart';
 
 class SecMainScreen extends StatefulWidget {
-  const SecMainScreen({Key key}) : super(key: key);
+  const SecMainScreen({Key key, this.appBarTxt}) : super(key: key);
+final String appBarTxt;
 
   @override
   _SecMainScreenState createState() => _SecMainScreenState();
@@ -29,8 +28,7 @@ class _SecMainScreenState extends State<SecMainScreen> {
          return InkWell(
            onTap: () {
              AuthApi.get(context).setCurrentIndex(3);
-             Navigator.push(context,
-                 MaterialPageRoute(builder: (context) => HomeApp(),));
+             AuthApi.get(context).setAppBarTxt(txt: listTxt[index]??"");
            },
            child: Padding(
              padding: const EdgeInsets.symmetric(vertical: 3,horizontal: 12),

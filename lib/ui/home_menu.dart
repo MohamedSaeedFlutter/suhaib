@@ -18,8 +18,8 @@ class _HomeMenuState extends State<HomeMenu> {
   @override
   Widget build(BuildContext context) {
     return
-      Scaffold( body:
-      ListView.builder(
+      Scaffold(
+        body: ListView.builder(
         reverse: true,
         itemCount: listTxt.length,
         scrollDirection: Axis.vertical,
@@ -29,8 +29,7 @@ class _HomeMenuState extends State<HomeMenu> {
           return InkWell(
             onTap: () {
               AuthApi.get(context).setCurrentIndex(2);
-              Navigator.push(context,
-                MaterialPageRoute(builder: (context) => HomeApp(),));
+              AuthApi.get(context).setAppBarTxt(txt: listTxt[index]??"");
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 3,horizontal: 12),
