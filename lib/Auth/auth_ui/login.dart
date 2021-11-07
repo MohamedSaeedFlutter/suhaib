@@ -1,6 +1,5 @@
 import 'dart:io';
 
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -246,7 +245,8 @@ bool isFacebook = false;
                     SizedBox(height: height * .02,),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.9,
-                      child: ElevatedButton(
+                      child:
+                      ElevatedButton(
                         style: ElevatedButton.styleFrom(
                         primary: Color.fromRGBO(155, 156, 184 , 1),
                         onPrimary: Colors.white,

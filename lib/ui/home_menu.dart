@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:suhaib/Auth/auth_logic/auth_api_REMOTE_1630.dart';
 
+import 'bottom_n_b.dart';
 import 'sec_main_screen.dart';
 
 class HomeMenu extends StatefulWidget {
@@ -15,8 +17,9 @@ class _HomeMenuState extends State<HomeMenu> {
     "الدراسات والابحاث الكمية","مصادر المعلومات"];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView.builder(
+    return
+      Scaffold( body:
+      ListView.builder(
         reverse: true,
         itemCount: listTxt.length,
         scrollDirection: Axis.vertical,
@@ -24,11 +27,14 @@ class _HomeMenuState extends State<HomeMenu> {
         physics: ScrollPhysics(),
         itemBuilder: (context, index) {
           return InkWell(
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SecMainScreen(),)),
+            onTap: () {
+              AuthApi.get(context).setCurrentIndex(2);
+              Navigator.push(context,
+                MaterialPageRoute(builder: (context) => HomeApp(),));
+            },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 3,horizontal: 12),
-              child: Container( height: 50,
+              child: Container( height: 72,
                 child: Card(
                   semanticContainer: true,
                   clipBehavior: Clip.antiAliasWithSaveLayer,

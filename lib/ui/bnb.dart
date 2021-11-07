@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:suhaib/core/constants.dart';
+import 'package:suhaib/ui/home_menu.dart';
 
 
 
@@ -34,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<Widget> get widgetOptions => <Widget>[
     Text(""),
-    Text(""),
+    HomeMenu(),
   ];
 
   @override

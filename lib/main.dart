@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suhaib/home_chat/home_chat_logic/home_chat_api.dart';
 import 'package:suhaib/states/chat_state.dart';
-import 'package:suhaib/ui/bnb.dart';
-import 'package:suhaib/ui/home_menu.dart';
+import 'package:suhaib/ui/bottom_n_b.dart';
 
 import 'Auth/auth_logic/auth_api_REMOTE_1630.dart';
 import 'Auth/auth_ui/login.dart';
+import 'home_chat/home_chat_logic/upload_file_logic.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +20,9 @@ Future<void> main() async {
         ),
         BlocProvider<DataApi>(
           create: (BuildContext context) => DataApi(),
+        ),
+        BlocProvider<UploadFileLogic>(
+          create: (BuildContext context) => UploadFileLogic(),
         ),
       ],
       child:
@@ -48,13 +51,11 @@ class _MyAppState extends State<MyApp> {
           if (snapshot.hasError) {
             return const CircularProgressIndicator();
           }
-          // Once complete, show your application
           if (snapshot.connectionState == ConnectionState.done) {
             return MediaQuery(
                 data: const MediaQueryData(),
                 child: MaterialApp(
                   initialRoute: '/',
-                  // onGenerateRoute: RouteGenerator.generateRoute,
                   title: 'Friends',
                   theme: ThemeData(
                       buttonColor: Color.fromRGBO(56, 59, 110, 1),
@@ -71,16 +72,9 @@ class _MyAppState extends State<MyApp> {
                       print(state);
                       print(" bloc Consumer works");
                       return
-                        HomeMenu();
-                        // SplashScreen()
-                        // NotSignIn()
-                        // Splash0()
-                        // SplashLogin()
-                        // LogIn()
-                        // ));
-                        // FirebaseAuth.instance.currentUser != null
-                        //     ? HomeMenu()
-                        //     : LogIn();
+                        FirebaseAuth.instance.currentUser != null
+                            ? HomeApp()
+                            : LogIn();
                     },
                   ),
                 ));

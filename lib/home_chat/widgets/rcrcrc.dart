@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suhaib/home_chat/home_chat_logic/home_chat_api.dart';
-import 'package:suhaib/models/message_model.dart';
 import 'package:suhaib/states/chat_state.dart';
 
 

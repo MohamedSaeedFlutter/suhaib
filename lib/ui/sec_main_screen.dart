@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:suhaib/splash/splash0.dart';
+import 'package:suhaib/Auth/auth_logic/auth_api_REMOTE_1630.dart';
 
 import 'book_menu.dart';
+import 'bottom_n_b.dart';
 
 class SecMainScreen extends StatefulWidget {
   const SecMainScreen({Key key}) : super(key: key);
@@ -26,12 +27,15 @@ class _SecMainScreenState extends State<SecMainScreen> {
         physics: ScrollPhysics(),
         itemBuilder: (context, index) {
          return InkWell(
-           onTap: () => Navigator.push(context,
-               MaterialPageRoute(builder: (context) => BookMenu(),)),
+           onTap: () {
+             AuthApi.get(context).setCurrentIndex(3);
+             Navigator.push(context,
+                 MaterialPageRoute(builder: (context) => HomeApp(),));
+           },
            child: Padding(
              padding: const EdgeInsets.symmetric(vertical: 3,horizontal: 12),
              child: Container(
-               height: 50,
+               height: 72,
                child: Card(
                  semanticContainer: true,
                  clipBehavior: Clip.antiAliasWithSaveLayer,

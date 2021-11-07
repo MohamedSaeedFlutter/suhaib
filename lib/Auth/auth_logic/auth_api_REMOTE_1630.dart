@@ -122,6 +122,12 @@ AuthMode authMode ;
     emit(ToSignUpState());
   }
 
+int currentIndex = 0 ;
+  setCurrentIndex (int index){
+    currentIndex = index;
+    emit(SetCurrentIndexState());
+  }
+
   Future <User> initializeCurrentUser() async {
    try{currentUser = await FirebaseAuth.instance.currentUser;}
    catch (e){
@@ -140,36 +146,38 @@ AuthMode authMode ;
     print('uploaded person successfully: ${person.toString()}');
   }
 
-
-  Future<String> uploadImage({File localFile,String uid}) async {
-    final Reference firebaseStorageRef =
-    FirebaseStorage.instance.ref().child('Persons/images/profiles/');
-    await firebaseStorageRef.putFile(localFile).catchError((onError) {
-      print(onError);
-      return false;
-    });
-    String url = await firebaseStorageRef.getDownloadURL();
-    print("uploading image download url: $url");
-    emit(UploadImageChatState());
-    return url;
+  urlLauncher({String mail}){
+    String encodeQueryParameters(
+        Map<String, String> params, String mail) {
+      return params.entries
+          .map((e) =>
+      '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+          .join('&');
+    }
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: mail,
+      query: encodeQueryParameters(<String, String>{
+        'Suhaib_Digital_Base_App':  '' },mail),
+    );
+    launch(emailLaunchUri.toString());
   }
 
- urlLauncher({String mail}){
-   String encodeQueryParameters(
-       Map<String, String> params, String mail) {
-     return params.entries
-         .map((e) =>
-     '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-         .join('&');
-   }
-   final Uri emailLaunchUri = Uri(
-     scheme: 'mailto',
-     path: mail,
-     query: encodeQueryParameters(<String, String>{
-       'Suhaib_Digital_Base_App':  '' },mail),
-   );
-   launch(emailLaunchUri.toString());
- }
+
+
+  // Future<String> uploadFile({File localFile,String uid}) async {
+  //   final Reference firebaseStorageRef =
+  //   FirebaseStorage.instance.ref().child('sahib/data/');
+  //   await firebaseStorageRef.putFile(localFile).catchError((onError) {
+  //     print(onError);
+  //     return false;
+  //   });
+  //   String url = await firebaseStorageRef.getDownloadURL();
+  //   print("uploading file download url: $url");
+  //   emit(UploadImageChatState());
+  //   return url;
+  // }
+
 
 
 
