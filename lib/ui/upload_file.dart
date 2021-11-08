@@ -77,11 +77,13 @@ print("User canceled the picker");    }
             width: MediaQuery.of(context).size.width * 0.95,
             child: ElevatedButton(
               onPressed: () {
+                print("category ${AuthApi.get(context).appBarTxt}");
 print("1////${AuthApi.get(context).fileOutput?.path?.split('/')?.last?.toString()??""}");
                 UploadFileLogic.get(context).sendFile(
                     amId: auth.uid,
                     localFile: File(filePickerCross?.path),
-                    cat: widget.category , sub: pdfController.text
+                    cat: AuthApi.get(context).appBarTxt,
+                    sub: pdfController.text
                 ).then((value) => Fluttertoast.showToast(
                     msg: "The File uploaded successfully !"));
               },
@@ -110,7 +112,6 @@ print("1////${AuthApi.get(context).fileOutput?.path?.split('/')?.last?.toString(
           content: Text('You selected ${filePicker.length} file(s).'),
         ),
       );
-
       setState(() {});
     });
   }
