@@ -1,6 +1,9 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suhaib/models/files_model.dart';
@@ -23,13 +26,9 @@ class UploadFileLogic extends Cubit<ChangeChatState>  {
       print(fileExtension);
       var uuid = const Uuid().v4();
       final Reference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('sahib/data/${amId}$uuid/');
+          .ref().child('sahib/data/${amId}$uuid/');
       await firebaseStorageRef.putFile(localFile)
-          .catchError((onError) {
-        print(onError);
-        return false;
-      });
+          .catchError((onError) {print(onError); return false;});
       String url = await firebaseStorageRef.getDownloadURL();
       print("download url: $url");
       Files file = Files(
@@ -76,6 +75,50 @@ class UploadFileLogic extends Cubit<ChangeChatState>  {
     print(person.id);
     return person;
   }
+
+
+  //
+  // final mainReference = FirebaseDatabase.instance.reference().child('Database');
+  // Future getPdfAndUpload()async{
+  //   var rng = new Random();
+  //   String randomName="";
+  //   for (var i = 0; i < 20; i++) {
+  //     print(rng.nextInt(100));
+  //     randomName += rng.nextInt(100).toString();
+  //   }
+  //   FilePickerResult result = await FilePicker.platform.pickFiles();
+  //   File file = File(result.files.first.path);
+  //       // .getFile(type: FileType.custom, fileExtension: 'pdf')
+  //   String fileName = '${randomName}.pdf';
+  //   print(fileName);
+  //   print('${file.readAsBytesSync()}');
+  //   savePdf(file.readAsBytesSync(), fileName);
+  // }
+  //
+  // Future savePdf(List<int> asset, String name) async {
+  //
+  //   Reference reference = FirebaseStorage.instance.ref().child(name);
+  //   UploadTask uploadTask = reference.putData(asset);
+  //   String url = await (await uploadTask..onComplete).ref.getDownloadURL();
+  //   print(url);
+  //   documentFileUpload(url);
+  //   return  url;
+  // }
+  // void documentFileUpload(String str) {
+  //
+  //   var data = {
+  //     "PDF": str,
+  //   };
+  //   mainReference.child("Documents").child('pdf').set(data).then((v) {
+  //   });
+  // }
+
+
+
+
+
+
+
 
 
 
